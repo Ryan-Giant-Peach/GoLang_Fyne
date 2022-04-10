@@ -9,6 +9,9 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
+	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -44,10 +47,24 @@ func main() {
 
 	title := canvas.NewText("Get Useless Fact", color.White)
 	title.TextStyle = fyne.TextStyle{Bold: true}
+	title.Alignment = fyne.TextAlignCenter
+	title.TextSize = 24
 
 	factText := widget.NewLabel("")
 	factText.Wrapping = fyne.TextWrapWord
 
-	win.SetContent(widget.NewLabel("Hello World"))
+	button := widget.NewButton("Get Fact", func() {
+		fact, err := getRandomFacts()
+		if err != nil {
+			dialog.ShowError(err, win)
+		} else {
+			factText.SetText(fact.Text)
+		}
+	})
+
+	hBox := container.New(layout.NewHBoxLayout(), layout.NewSpacer(), button, layout.NewSpacer())
+	vBox := container.New(layout.NewVBoxLayout(), title, hBox, widget.NewSeparator(), factText)
+
+	win.SetContent(vBox)
 	win.ShowAndRun()
 }
