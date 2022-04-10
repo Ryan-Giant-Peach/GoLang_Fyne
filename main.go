@@ -18,7 +18,7 @@ import (
 var client *http.Client
 
 type randomFact struct {
-	Text string `json:"test"`
+	Text string `json:"text"`
 }
 
 func getRandomFacts() (randomFact, error) {
@@ -49,10 +49,8 @@ func main() {
 	title.TextStyle = fyne.TextStyle{Bold: true}
 	title.Alignment = fyne.TextAlignCenter
 	title.TextSize = 24
-
 	factText := widget.NewLabel("")
 	factText.Wrapping = fyne.TextWrapWord
-
 	button := widget.NewButton("Get Fact", func() {
 		fact, err := getRandomFacts()
 		if err != nil {
